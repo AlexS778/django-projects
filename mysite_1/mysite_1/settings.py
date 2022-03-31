@@ -16,7 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Used for a default title
-APP_NAME = "AlexsList"  # Add
+APP_NAME = "Alex's List"  # Add
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "social_django",
     "taggit",
-    "home.apps.HomeConfig",
+    "ads.apps.AdsConfig",
 ]
 
 # When we get to crispy forms :)
