@@ -24,9 +24,14 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 
 urlpatterns = [
-    path("", include("ads.urls")),  # Change to ads.urls
+    path("", TemplateView.as_view(template_name="home/main.html")),
     path("admin/", admin.site.urls),  # Keep
     path("accounts/", include("django.contrib.auth.urls")),  # Keep
+    path("autos/", include("autos.urls")),
+    path("hello/", include("hello.urls")),
+    path("polls/", include("polls.urls")),
+    path("cats/", include("cats.urls")),
+    path("ads/", include("ads.urls")),
     url(r"^oauth/", include("social_django.urls", namespace="social")),  # Keep
     # Sample applications
 ]

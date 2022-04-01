@@ -46,6 +46,11 @@ INSTALLED_APPS = [
     "social_django",
     "taggit",
     "ads.apps.AdsConfig",
+    "hello.apps.HelloConfig",
+    "autos.apps.AutosConfig",
+    "home.apps.HomeConfig",
+    "polls.apps.PollsConfig",
+    "cats.apps.CatsConfig",
 ]
 
 # When we get to crispy forms :)
