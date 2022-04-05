@@ -1,4 +1,6 @@
 from django import forms
+from django.core import validators
+from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from ads.humanize import naturalsize
@@ -51,6 +53,11 @@ class CreateForm(forms.ModelForm):
             instance.save()
 
         return instance
+
+
+# strip means to remove whitespace from the beginning and the end before storing the column
+class CommentForm(forms.Form):
+    comment = forms.CharField(required=True, max_length=500, min_length=3, strip=True)
 
 
 # https://docs.djangoproject.com/en/3.0/topics/http/file-uploads/

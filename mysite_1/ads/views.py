@@ -1,15 +1,12 @@
-from re import template
-from sre_constants import SUCCESS
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views import View
 
-from ads.forms import CreateForm
-from ads.models import Ad
+from ads.forms import CommentForm, CreateForm
+from ads.models import Ad, Comment
 from ads.owner import (
     OwnerCreateView,
     OwnerDeleteView,
@@ -19,17 +16,24 @@ from ads.owner import (
 )
 
 
-class AdsListView(OwnerListView):
+class ForumsListView(OwnerListView):
     model = Ad
     template_name = "ads/list.html"
 
 
-class AdsDetailView(OwnerDetailView):
+class ForumDetailView(OwnerDetailView):
     model = Ad
     template_name = "ads/detail.html"
 
+    def get(self, request, pk):
+        x = Ad.objects.get(id=pk)
+        comments = Comment.objects.filter(ad=x).order_by("-updated_at")
+        comment_form = CommentForm()
+        context = {"ad": x, "comments": comments, "comment_form": comment_form}
+        return render(request, self.template_name, context)
 
-class AdsCreateView(LoginRequiredMixin, View):
+
+class ForumsCreateView(LoginRequiredMixin, View):
     template_name = "ads/form.html"
     success_url = reverse_lazy("ads:all")
 
@@ -51,7 +55,7 @@ class AdsCreateView(LoginRequiredMixin, View):
         return redirect(self.success_url)
 
 
-class AdsUpdateView(LoginRequiredMixin, View):
+class ForumsUpdateView(LoginRequiredMixin, View):
     template_name = "ads/form.html"
     success_url = reverse_lazy("pics:all")
 
@@ -75,9 +79,27 @@ class AdsUpdateView(LoginRequiredMixin, View):
         return redirect(self.success_url)
 
 
-class AdsDeleteView(OwnerDeleteView):
+class ForumsDeleteView(OwnerDeleteView):
     model = Ad
     template_name = "ads/delete.html"
+
+
+class CommentCreateView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        f = get_object_or_404(Ad, id=pk)
+        comment = Comment(text=request.POST["comment"], owner=request.user, ad=f)
+        comment.save()
+        return redirect(reverse("ads:ad_detail", args=[pk]))
+
+
+class CommentDeleteView(OwnerDeleteView):
+    model = Comment
+    template_name = "ads/comment_delete.html"
+
+    # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id
+    def get_success_url(self):
+        ad = self.object.ad
+        return reverse("ads:ad_detail", args=[ad.id])
 
 
 def stream_file(request, pk):
