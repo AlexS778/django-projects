@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db.models import Q
 from django.db.utils import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -17,6 +19,7 @@ from ads.owner import (
     OwnerListView,
     OwnerUpdateView,
 )
+from ads.utils import dump_queries
 
 
 class ForumsListView(OwnerListView):
@@ -31,7 +34,31 @@ class ForumsListView(OwnerListView):
             rows = request.user.favorite_ads.values("id")
             # favorites = [2, 4, ...] using list comprehension
             favorites = [row["id"] for row in rows]
-        ctx = {"ad_list": ad_list, "favorites": favorites}
+
+        strval = request.GET.get("search", False)
+        if strval:
+            # Simple title-only search
+            # objects = Post.objects.filter(title__contains=strval).select_related().order_by('-updated_at')[:10]
+
+            # Multi-field search
+            # __icontains for case-insensitive search
+            query = Q(title__contains=strval)
+            query.add(Q(text__contains=strval), Q.OR)
+            ad_list = (
+                Ad.objects.filter(query).select_related().order_by("-updated_at")[:10]
+            )
+        else:
+            ad_list = Ad.objects.all().order_by("-updated_at")[:10]
+
+        # Augment the post_list
+        for obj in ad_list:
+            obj.natural_updated = naturaltime(obj.updated_at)
+
+        ctx = {
+            "ad_list": ad_list,
+            "favorites": favorites,
+            "search": strval,
+        }
         return render(request, self.template_name, ctx)
 
 

@@ -1,6 +1,16 @@
 {% extends "base_menu.html" %}
 {% block content %}
 <h1>Ads</h1>
+<div style="float:right">
+<!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
+<form>
+  <input type="text" placeholder="Search.." name="search"
+  {% if search %} value="{{ search }}" {% endif %}
+  >
+  <button type="submit"><i class="fa fa-search"></i></button>
+<a href="{% url 'ads:all' %}"><i class="fa fa-undo"></i></a>
+</form>
+</div>
 <p>
 {% if ad_list %}
 <ul>
@@ -11,7 +21,6 @@
         (<a href="{% url 'ads:ad_update' ad.id %}">Edit</a> |
         <a href="{% url 'ads:ad_delete' ad.id %}">Delete</a>)
         {% endif %}
-        {% if user.is_authenticated %}
         <!-- Two hrefs with two stacked icons each - one showing and one hidden -->
         <a href="#" onclick=
             "favPost('{% url 'ads:ad_unfavorite' ad.id %}', {{ ad.id }} );return false;"
@@ -32,6 +41,15 @@
         <i class="fa fa-star-o fa-stack-1x"></i>
         </span>
         </a>
+        <div style="left:10px">
+            {% if ad.text|length < 100 %}
+                {{ ad.text }}
+            {% else %}
+                {{ ad.text|slice:"0:99" }}
+                <a href="{% url 'ads:ad_detail'  ad.id %}">...</a>
+            {% endif %}
+        </div>
+        {% if user.is_authenticated %}
         {% endif %}
     </li>
   {% endfor %}
