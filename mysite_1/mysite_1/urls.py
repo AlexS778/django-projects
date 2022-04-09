@@ -32,6 +32,7 @@ urlpatterns = [
     path("polls/", include("polls.urls")),
     path("cats/", include("cats.urls")),
     path("ads/", include("ads.urls")),
+    path("autograder/", include("autograder.urls")),
     url(r"^oauth/", include("social_django.urls", namespace="social")),  # Keep
     # Sample applications
 ]

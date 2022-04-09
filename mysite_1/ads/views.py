@@ -93,6 +93,7 @@ class ForumsCreateView(LoginRequiredMixin, View):
         pic = form.save(commit=False)
         pic.owner = self.request.user
         pic.save()
+        form.save_m2m()
         return redirect(self.success_url)
 
 

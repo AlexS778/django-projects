@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Autograder</h1>
+
+
+{% if user.is_authenticated %}
+<form method="POST">{% csrf_token %}
+  <div>
+    <label for="Field1">Field 1</label>
+    <input name="Field1" id="Field1">
+  </div>
+  <div>
+    <label for="Field2">Field 2 </label>
+    <input name="Field2" id="Field2">
+  </div>
+  <div>
+    <button>Submit</button>
+  </div>
+</form>
+{% endif %}
+
+
+</body>
+</html>

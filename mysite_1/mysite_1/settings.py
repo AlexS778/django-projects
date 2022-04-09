@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "home.apps.HomeConfig",
     "polls.apps.PollsConfig",
     "cats.apps.CatsConfig",
+    "autograder.apps.AutograderConfig",
 ]
 
 # When we get to crispy forms :)
