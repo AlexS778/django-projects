@@ -16,11 +16,12 @@ class mainview(LoginRequiredMixin, View):
             return render(request, self.template_name)
 
     def post(self, request):
-        data = request.POST.get("Field1")
-        data1 = request.POST.get("Field2")
-        data.strip()
-        data1.strip()
-        final_data = data + " " + data1
-        final_data1 = final_data[::-1]
-        final_data1.casefold()
-        return HttpResponse(final_data1)
+        data = (
+            (
+                (request.POST.get("Field1")).strip()
+                + " "
+                + (request.POST.get("Field2")).strip()
+            )
+        )[::-1]
+        data.casefold()
+        return HttpResponse(data)

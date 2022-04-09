@@ -6,6 +6,8 @@
 
 
 {% if user.is_authenticated %}
+<p> you are logged in as {{ user.username}} </p>
+<a href="{% url 'logout' %}?next={% url 'autograder:main' %}">Logout</a>
 <form method="POST">{% csrf_token %}
   <div>
     <label for="Field1">Field 1</label>
