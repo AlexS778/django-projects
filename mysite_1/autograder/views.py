@@ -9,7 +9,6 @@ from django.views import View
 
 class mainview(LoginRequiredMixin, View):
     template_name = "autograder/main.html"
-    success_url = reverse_lazy("ads:all")
 
     def get(self, request):
         if request.user.is_authenticated:
@@ -18,10 +17,10 @@ class mainview(LoginRequiredMixin, View):
     def post(self, request):
         data = (
             (
-                (request.POST.get("Field1")).strip()
+                ((request.POST.get("field1")).strip()).casefold()
                 + " "
-                + (request.POST.get("Field2")).strip()
+                + ((request.POST.get("field2")).strip()).casefold()
             )
         )[::-1]
-        data.casefold()
-        return HttpResponse(data)
+        ctx = {"data": data}
+        return render(request, self.template_name, ctx)
