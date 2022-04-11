@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+</style>
+</head>
+<body>
+<h1> Blogs </h1>
+<ul>
+    {% for e in post %}
+        <li>
+            <h2> {{e.title}} </h2>
+            <p>{{e.body}}</p>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
