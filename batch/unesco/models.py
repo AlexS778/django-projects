@@ -1,24 +1,33 @@
 from django.db import models
 
+
 class Category(models.Model):
-    name = models.CharField(max_length=128, default='')
+    name = models.CharField(max_length=128, default="")
+
     def __str__(self):
         return self.name
+
 
 class State(models.Model):
-    name = models.CharField(max_length=128, default='')
+    name = models.CharField(max_length=128, default="")
+
     def __str__(self):
         return self.name
+
 
 class Region(models.Model):
-    name = models.CharField(max_length=128, default='')
+    name = models.CharField(max_length=128, default="")
+
     def __str__(self):
         return self.name
 
+
 class ISO(models.Model):
-    name = models.CharField(max_length=128, default='')
+    name = models.CharField(max_length=128, default="")
+
     def __str__(self):
         return self.name
+
 
 class Site(models.Model):
     name = models.CharField(max_length=300)
@@ -33,5 +42,5 @@ class Site(models.Model):
     iso = models.ForeignKey("ISO", on_delete=models.CASCADE, null=True)
     state = models.ForeignKey("State", on_delete=models.CASCADE, null=True)
 
-    def __str__(self) :
+    def __str__(self):
         return self.name
