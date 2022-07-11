@@ -8,3 +8,6 @@ login - test_user
 password - manman3.14
 
 СRUD application is called Ads.
+
+
+https://github.com/AlexS778/django-projects/tree/master/mysite_1/ads
