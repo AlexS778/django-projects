@@ -6,3 +6,5 @@ Those are all my django projects. Want to see them - https://johnsmall441.python
 login - test_user
 
 password - manman3.14
+
+СRUD application is called Ads.
